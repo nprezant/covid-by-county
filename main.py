@@ -37,6 +37,10 @@ if __name__ == "__main__":
     # pprint(co_data)
 
     # Get list of all states
+    states_data = cached_request("https://data.cdc.gov/resource/3nnm-4jni.json?$select=distinct(state) as state", "states.json")
+    states = [x["state"] for x in states_data]
+    states.sort()
+    print("States:", states[:4], "...")
 
     # Get list of all counties
     counties = list(set([x["county"] for x in co]))
