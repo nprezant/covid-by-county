@@ -2,3 +2,6 @@
 *[Ss]ecret*
 *.txt
 *.json
+*.pyc
+*.swp
+.DS_Store

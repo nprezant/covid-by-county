@@ -64,3 +64,12 @@ if __name__ == "__main__":
     updated_at = catelog["results"][0]["resource"]["updatedAt"]
     print("Dataset last updated at ", updated_at)
 
+    # Get transmission level data
+    transmissions = cached_request("https://data.cdc.gov/resource/8396-v7yb.json?state_name=Colorado", "transmissions.json")
+    larimer_transmissions = [x for x in transmissions if x["county_name"] == "Larimer County"]
+    pprint(larimer_transmissions[-1])
+    print("Number of larimer transmissions recorded:", len(larimer_transmissions))
+
+    # Get states and counties
+    #st_ct = cached_request("https://data.cdc.gov/resource/3nnm-4jni.json?$query=SELECT DISTINCT state,county WHERE state LIKE %co% OR county LIKE %co% LIMIT 10", "st_ct.json")
+    st_ct = cached_request("https://data.cdc.gov/resource/3nnm-4jni.json?$query=SELECT DISTINCT state,county LIMIT 10", "st_ct.json")
