@@ -80,7 +80,7 @@ def process_zips():
         w = csv.writer(f, delimiter=",", quoting=csv.QUOTE_ALL)
         w.writerow(["STCOUNTYFP", "ZIPS,..."])
         for countyfp,zips in zip_data.items():
-            w.writerow([countyfp] + list(zips))
+            w.writerow([countyfp] + sorted(list(zips)))
 
 def get_countyfp_names() -> Dict[int,Tuple[str,str]]:
     """ Match fips codes to a county name """
@@ -147,7 +147,7 @@ def process_places():
         w = csv.writer(f, delimiter=",", quoting=csv.QUOTE_ALL)
         w.writerow(["STCOUNTYFP", "PLACES,..."])
         for countyfp,places in place_data.items():
-            w.writerow([countyfp] + list(places))
+            w.writerow([countyfp] + sorted(list(places)))
 
 def process_combined():
     """
@@ -185,13 +185,13 @@ def process_combined():
             names[countyfp] = county
 
     with open("processed/county-all.csv", "w") as f:
+        w = csv.writer(f, delimiter=",", quoting=csv.QUOTE_ALL)
         for fip in zips.keys():
             name = names.get(fip, "")
             state = statenames.get(states.get(fip, ""))
             ziplist = zips.get(fip, [])
             placelist = places.get(fip, [])
-            s = f"{name}, {state} {' '.join(ziplist)} {' '.join(placelist)}\n"
-            f.write(s)
+            w.writerow([f"{name}, {state}"] + ziplist + placelist)
 
 if __name__ == "__main__":
     
