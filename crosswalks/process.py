@@ -171,7 +171,8 @@ def process_combined():
         next(r)
         for row in r:
             countyfp = row[0]
-            placelist = row[1:]
+            placelist = [place.rsplit(" ", maxsplit=1)[0] for place in row[1:]] # Remove census place type
+            placelist = [place.removesuffix(" metropolitan government") for place in placelist]
             places[countyfp] = placelist
     
     with open("processed/countyfp-county.csv", "r") as f:
