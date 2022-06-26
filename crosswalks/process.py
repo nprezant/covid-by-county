@@ -82,12 +82,12 @@ def process_zips():
         for countyfp,zips in zip_data.items():
             w.writerow([countyfp] + sorted(list(zips)))
 
-def get_countyfp_names() -> Dict[int,Tuple[str,str]]:
-    """ Match fips codes to a county name """
+def get_countyfp_names() -> Dict[str,Tuple[str,str]]:
+    """ Match fips codes to a county and state name """
     m = {}
     # Fill in a few missing values
-    m[46102] = "Oglala Lakota County", "SD"
-    m[46113] = "Shannon County", "SD"
+    m["46102"] = "Oglala Lakota County", "SD"
+    m["46113"] = "Shannon County", "SD"
     with open("raw/zip-county.csv", "r") as f:
         r = csv.reader(f, delimiter=",")
         next(r)
@@ -192,6 +192,7 @@ def process_combined():
             state = statenames.get(states.get(fip, ""))
             ziplist = zips.get(fip, [])
             placelist = places.get(fip, [])
+            placelist = [f"{place}, {state}" for place in placelist]
             w.writerow([f"{name}, {state}"] + ziplist + placelist)
 
 if __name__ == "__main__":
